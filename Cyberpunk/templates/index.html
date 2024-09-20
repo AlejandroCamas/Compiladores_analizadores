@@ -1,0 +1,192 @@
+<!--CARLOS ALEJANDRO MORENO CAMAS-->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analizador Sintactico web</title>
+    <link rel="stylesheet" href="estilos.css">
+    <!--AQUI PONGO EL ESTILO DEL ANALIZADOR PARA PODER GUIARME-->
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Comic Sans MS', Arial, verdana;
+            /*RECORDAR QUE AL SER UNA URL LA COMPUTADORA DEBE TENER CONECCION A INTERNET PARA MOSTRAR LA IMAGEN*/
+            
+            background-image: url('https://wallpapercave.com/wp/wp8968329.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: #00BFFF; /*color a usar Celeste */
+        }
+        .container { /*aqui*/
+
+            display: grid; /*usamos el grid para poder alinear nuestro contenedor*/
+            justify-content: center;
+            height: 650px;
+            align-items: center;
+           /* flex-direction: column;*/
+            text-align: center;
+            font-family: 'Comic Sans MS', Arial, verdana;
+            background-color: rgba(0, 0, 0, 0.6);
+            border: 3px solid #00BFFF; /*color a usar Celeste */
+            padding: 20px;
+            box-shadow: 0 0 10px rgb(0, 0, 0);
+            border-radius: 18px;
+            width: 100%;
+            max-width: 900px;
+        }
+        /*<!--<h4>hecho por: Alejandro Moreno Camas</h4>-->*/
+        textarea {
+            width: 100%;
+            margin-bottom: 10px;
+            text-align: left;
+            color: #00BFFF; /*color a usar Celeste */
+            background-color: transparent;
+            border: 3px solid #00BFFF; /*color a usar Celeste */
+            padding: 10px;
+            box-sizing: border-box;
+            resize: both;
+            border-radius: 4px;
+        }
+        input[type="submit"], input[type="button"] {
+            /*display: inline-block;*/
+            font-family: 'Comic Sans MS', Arial, verdana;
+            margin: 10px 10px;
+            padding: 10px 20px;
+            background-color: transparent;
+            color: #00BFFF; /*color a usar Celeste */
+            border: 1px solid #00BFFF; /*color a usar Celeste */
+            border-radius: 4px;
+            cursor: pointer;
+            box-shadow: 0 0 5px black;
+        }
+        input[type="submit"]:hover, input[type="button"]:hover {
+            background-color: #01124a; /*color a usar Celeste en el fondo*/
+            color: white; /*color al pasar el cursor*/
+        }
+        h1, h2 {
+            color: #00BFFF; /*color a usar Celeste */
+        }
+        h2 {
+            margin-top: 20px;
+            font-family: 'Courier', verdana, sans-serif;
+            text-align: left;
+        }
+        .tables-container {
+            display: flex;
+            justify-content: space-between;
+        }
+        /*AQUI TENEMOS NUESTRA AREA DE SALIDA */
+        .tokens-textarea, .line-info-table {
+            width: 88%;
+            height: 150px;
+            border: 3px solid #00BFFF; /*color a usar Celeste */
+            border-radius: 4px;
+        }
+        .line-info-table {
+            padding: 10px;
+            box-sizing: border-box;
+            background-color: black;
+            overflow-y: auto;
+        }
+        .line-info-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .line-info-table th, .line-info-table td {
+            border: 1px solid #00BFFF; /*color a usar Celeste */
+            padding: 8px;
+            text-align: left;
+        }
+        .line-info-table th {
+            background-color: transparent;
+        }
+    </style>
+
+    <script>
+        function clearTextarea() {
+            document.querySelector('textarea[name="text"]').value = '';
+            const tableBody = document.querySelector('.line-info-table table tbody');
+            if (tableBody) {
+                tableBody.innerHTML = '';
+            }
+            const tokensTextarea = document.querySelector('.tokens-textarea');
+            if (tokensTextarea) {
+                tokensTextarea.value = '';
+            }
+        }
+    </script>
+    
+</head>
+<!--AQUI COLOCARE TODA EL CONTENIDO QUE SE VERA EN LA APLICACION-->
+<body>
+    
+    <div class="container">
+        <h1>Analizador Sintactico:</h1>
+        <!--<h4>hecho por: Alejandro Moreno Camas</h4>-->
+        <form method="post">
+            <textarea name="text" rows="10" cols="10"></textarea>
+            <input type="submit" value="Analizar los Caracteres ingresados">
+            <input type="button" value="Borrar los Caracteres ingresados" onclick="clearTextarea()">
+            <!--<input type="button" value="mas informacion">-->
+
+            <!--EL SIGUIENTE LINK ES PARA NUESTRO BOTON PARA PODER IR A INFORMACION SOBRE LOS TOKENS-->
+            <!--<center><a href="https://www.codificandobits.com/blog/tokens-y-llms/">
+                <input type="button" value="más información">
+            </a>
+        </center>
+        -->
+        <!--ENVIAMOS AL USUARIO A UN SITIO DONDE PUEDE LEER MAS SOBRE LOS ANALIZADORES SINTACTICOS-->
+            <center>
+            <a href="https://es.wikipedia.org/wiki/Analizador_sint%C3%A1ctico">
+                <input type="button" value="¿Que es un Analizador sintáctico?">
+            </a>
+        </center>
+           <!-- <a href="https://www.youtube.com/watch?v=JZNoOWj3xSo&t=39s">
+                <input type="button" value="video">
+            </a>-->
+        </form>
+        <br><br>
+        <!--AQUI TENEMOS EL TEXTO QUE SE ENCUENTRA SOBRE NUESTROS CUADROS DE INFORMACION FINAL-->
+        <h2 style="text-align: center;">Tokens y Tipps de datos:</h2>
+
+        <!--NUESTRO RECUADRO DE LA DERECHA DONDE NOS DICE EL TOKEN, TIPO Y LINEA-->
+        <div class="tables-container">
+            {% if tokens %}
+            <textarea class="tokens-textarea" readonly style="width: 30%; height: 150px; text-align: left; line-height: 0.3;">
+                    {% for token in tokens %}
+                        {{ token }}
+                    {% endfor %}
+                </textarea>
+            {% endif %}
+            {% if line_info %}
+            <div class="line-info-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Línea</th>
+                            <th>Tipo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for line, tipo in line_info %}
+                        <tr>
+                            <td>{{ line }}</td>
+                            <td>{{ tipo }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+</body>
+</html>

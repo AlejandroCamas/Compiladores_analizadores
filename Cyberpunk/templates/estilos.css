@@ -1,0 +1,99 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: 'Comic Sans MS', Arial, verdana;
+    /*RECORDAR QUE AL SER UNA URL LA COMPUTADORA DEBE TENER CONECCION A INTERNET PARA MOSTRAR LA IMAGEN*/
+    
+    background-image: url('https://wallpapercave.com/wp/wp8968329.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: #00BFFF; /*color a usar Celeste */
+}
+.container { /*aqui*/
+
+    display: grid; /*usamos el grid para poder alinear nuestro contenedor*/
+    justify-content: center;
+    height: 650px;
+    align-items: center;
+   /* flex-direction: column;*/
+    text-align: center;
+    font-family: 'Comic Sans MS', Arial, verdana;
+    background-color: rgba(0, 0, 0, 0.6);
+    border: 3px solid #00BFFF; /*color a usar Celeste */
+    padding: 20px;
+    box-shadow: 0 0 10px rgb(0, 0, 0);
+    border-radius: 8px;
+    width: 80%;
+    max-width: 800px;
+}
+/*<!--<h4>hecho por: Alejandro Moreno Camas</h4>-->*/
+textarea {
+
+    width: 100%;
+    margin-bottom: 10px;
+    text-align: left;
+    color: #00BFFF; /*color a usar Celeste */
+    background-color: transparent;
+    border: 3px solid #00BFFF; /*color a usar Celeste */
+    padding: 10px;
+    box-sizing: border-box;
+    resize: both;
+    border-radius: 4px;
+}
+input[type="submit"], input[type="button"] {
+    /*display: inline-block;*/
+    font-family: 'Comic Sans MS', Arial, verdana;
+    margin: 10px 10px;
+    padding: 10px 20px;
+    background-color: transparent;
+    color: #00BFFF; /*color a usar Celeste */
+    border: 1px solid #00BFFF; /*color a usar Celeste */
+    border-radius: 4px;
+    cursor: pointer;
+    box-shadow: 0 0 5px black;
+}
+input[type="submit"]:hover, input[type="button"]:hover {
+    background-color: #01124a; /*color a usar Celeste en el fondo*/
+    color: white; /*color al pasar el cursor*/
+}
+h1, h2 {
+    color: #00BFFF; /*color a usar Celeste */
+}
+h2 {
+    margin-top: 20px;
+    font-family: 'Courier', verdana, sans-serif;
+    text-align: left;
+}
+.tables-container {
+    display: flex;
+    justify-content: space-between;
+}
+/*AQUI TENEMOS NUESTRA AREA DE SALIDA */
+.tokens-textarea, .line-info-table {
+    width: 88%;
+    height: 150px;
+    border: 3px solid #00BFFF; /*color a usar Celeste */
+    border-radius: 4px;
+}
+.line-info-table {
+    padding: 10px;
+    box-sizing: border-box;
+    background-color: black;
+    overflow-y: auto;
+}
+.line-info-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.line-info-table th, .line-info-table td {
+    border: 1px solid #00BFFF; /*color a usar Celeste */
+    padding: 8px;
+    text-align: left;
+}
+.line-info-table th {
+    background-color: transparent;
+}
