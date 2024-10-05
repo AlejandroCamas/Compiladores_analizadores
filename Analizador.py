@@ -99,6 +99,8 @@ class AnalizadorLexicoSintactico:
                 self.output_area.insert(tk.END, f"<Llave de apertura> {token}\n")
             elif token == "}":
                 self.output_area.insert(tk.END, f"<Llave de cierre> {token}\n")
+            elif token == "   ":
+                self.output_area.insert(tk.END, f"<Espacio en blanco> {token}\n")
             elif token == ";":
                 self.output_area.insert(tk.END, f"<Punto y coma> {token}\n")
             else:

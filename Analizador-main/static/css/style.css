@@ -1,0 +1,114 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 120vh;
+    margin: 0;
+    font-family: 'Comic Sans MS', Arial, Verdana;
+    background-image: url('https://wallpapercave.com/wp/wp8968329.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.container {
+    position: relative;
+    text-align: center;
+    font-family: 'Comic Sans MS', Arial, verdana;
+    background-color: rgba(0, 0, 0, 0.6);
+    border: 3px solid #00BFFF; /*color a usar Celeste */
+    padding: 20px;
+    box-shadow: 0 0 10px rgb(0, 0, 0);
+    border-radius: 8px;
+    width: 80%;
+    max-width: 1000px;
+    z-index: 1;
+}
+
+textarea {
+
+
+    width: 100%;
+    margin-bottom: 10px;
+    text-align: left;
+    color: #00BFFF; /*color a usar Celeste */
+    background-color: transparent;
+    border: 3px solid #00BFFF; /*color a usar Celeste */
+    padding: 10px;
+    box-sizing: border-box;
+    resize: both;
+    border-radius: 4px;
+}
+/*area para modificar los botones*/
+input[type="submit"], input[type="reset"] {
+    margin: 0 15px;
+    padding: 10px 25px;
+    background-color: #00BFFF #63c1f8;
+    background-color: #000000;
+    color: #aaeafd;
+    border: 1px solid;
+    border-radius: 6px;
+    cursor: pointer;
+    box-shadow: 0 0 8px rgba(0,0,0,0.4);
+}
+
+input[type="submit"]:hover, input[type="reset"]:hover {
+    background-color: #00BFFF;
+}
+
+h1, h2 {
+    color: #ffffff;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
+}
+
+.tables-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    margin-top: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+th, td {
+    border: 1px solid #35b7eb; /*Borde de nuestras tablas*/
+    padding: 10px;
+    text-align: left;
+    color: #ffffff;
+}
+
+th {
+    background-color: #98e2ff80;
+}
+
+tbody tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+tbody tr:nth-child(odd) {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.sintactic-result {
+    padding: 15px;
+    border-radius: 5px;
+    background-color: #00BFFF; /* cuadro para éxito */
+}
+
+.sintactic-error {
+    padding: 15px;
+    border-radius: 5px;
+    background-color: rgba(255, 0, 0, 0.5); /* Rojo para error */
+}
+
+.table-box {
+    max-height: 400px;
+    overflow-y: auto;
+    border: 2px solid #cccccc0a;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.05);
+}

@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Análisis Léxico y Sintáctico</title>
+    <title>Analizador Lexico y Sintáctico</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
+
+
 <body>
     <div class="container">
-        <h1>Análisis Léxico y Sintáctico</h1>
+        <h1>Analizador Lexico y Sintáctico</h1>
         <form method="POST">
             <textarea name="text" rows="10" cols="50">{{ text }}</textarea><br>
             <input type="submit" value="Analizar">
@@ -17,12 +19,17 @@
 
         <div class="tables-container">
 
+
+
             {% if syntax_result %}
                 <h2>Resultado del Análisis Sintáctico:</h2>
                 <div class="{{ 'sintactic-result' if syntax_result.correct else 'sintactic-error' }}">
                     {{ syntax_result.message }}
                 </div>
             {% endif %}
+
+
+
 
             <h2>Tokens Identificados:</h2>
             <div class="table-box">
@@ -39,6 +46,8 @@
                         </tr>
                     </thead>
                     <tbody>
+
+
                         {% if tokens %}
                             {% for token in tokens %}
                             <tr>
