@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Árbol de Operaciones</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        .node circle {
+            fill: #4CAF50;
+            stroke: white;
+            stroke-width: 3px;
+        }
+        .node text {
+            font: 16px sans-serif;
+            fill: white;
+            text-anchor: middle;
+        }
+        .link {
+            fill: none;
+            stroke: #ccc;
+            stroke-width: 2px;
+        }
+        body {
+            background-color: #333;
+            color: white;
+            text-align: center;
+        }
+        svg {
+            border: 1px solid #555;
+        }
+    </style>
+</head>
+<body>
+    <h1>Árbol de Operación</h1>
+    <div id="tree-container"></div>
+    <script>
+        function parseOperation(op) {
+            op = op.replace(/\s+/g, '');
+            const isOperator = (char) => ['+', '-', '*', '/'].includes(char);
+            function buildTree(expression) {
+                if (!isNaN(expression)) {
+                    return { name: expression };
+                }
+                let openParens = 0;
+                let operatorIndex = -1;
+                for (let i = 0; i < expression.length; i++) {
+                    const char = expression[i];
+                    if (char === '(') openParens++;
+                    if (char === ')') openParens--;
+                    if (isOperator(char) && openParens === 0) {
+                        operatorIndex = i;
+                    }
+                }
+                if (operatorIndex !== -1) {
+                    const operator = expression[operatorIndex];
+                    const left = expression.slice(0, operatorIndex);
+                    const right = expression.slice(operatorIndex + 1);
+                    return {
+                        name: operator,
+                        children: [buildTree(left), buildTree(right)]
+                    };
+                }
+                if (expression[0] === '(' && expression[expression.length - 1] === ')') {
+                    return buildTree(expression.slice(1, -1));
+                }
+                return { name: expression };
+            }
+            return buildTree(op);
+        }
+    
+        const operation = localStorage.getItem('operation');
+        if (operation) {
+            const treeData = parseOperation(operation);
+            const margin = { top: 40, right: 50, bottom: 20, left: 50 },
+                width = 800 - margin.right - margin.left,
+                height = 600 - margin.top - margin.bottom;
+    
+            const svg = d3.select("#tree-container").append("svg")
+                .attr("width", width + margin.right + margin.left)
+                .attr("height", height + margin.top + margin.bottom)
+                .call(d3.zoom().scaleExtent([0.5, 3]) // Zoom limitado entre 0.5x y 3x
+                    .on("zoom", zoomed)) // Función que maneja el zoom
+                .append("g")
+                .attr("transform", "translate(0,0)");
+    
+            const root = d3.hierarchy(treeData);
+            const treeLayout = d3.tree().size([width, height]);
+            treeLayout(root);
+    
+            const link = svg.selectAll(".link")
+                .data(root.links())
+                .enter().append("path")
+                .attr("class", "link")
+                .attr("d", d3.linkVertical()
+                    .x(d => d.x)
+                    .y(d => d.y))
+                .attr("stroke-opacity", 0);
+    
+            const node = svg.selectAll(".node")
+                .data(root.descendants())
+                .enter().append("g")
+                .attr("class", "node")
+                .attr("transform", d => "translate(" + d.x + "," + d.y + ")");
+    
+            node.append("circle")
+                .filter((d, i) => i === 0)
+                .attr("r", 1e-6)
+                .transition()
+                .duration(1000)
+                .attr("r", 25);
+    
+            setTimeout(() => {
+                link.transition()
+                    .duration(1000)
+                    .attr("stroke-opacity", 1)
+                    .attrTween("d", function(d) {
+                        const interpolate = d3.interpolate({ y: d.source.y, x: d.source.x }, d.target);
+                        return function(t) {
+                            return `M${d.source.x},${d.source.y}L${interpolate(t).x},${interpolate(t).y}`;
+                        };
+                    });
+            }, 1000);
+    
+            setTimeout(() => {
+                node.append("circle")
+                    .filter((d, i) => i !== 0)
+                    .attr("r", 1e-6)
+                    .transition()
+                    .duration(1000)
+                    .attr("r", 25);
+    
+                setTimeout(() => {
+                    node.append("text")
+                        .filter((d, i) => i === 0)
+                        .attr("dy", ".35em")
+                        .attr("y", 5)
+                        .text(d => d.data.name);
+                }, 1000);
+            }, 2000);
+    
+            setTimeout(() => {
+                node.append("text")
+                    .filter((d, i) => i !== 0)
+                    .attr("dy", ".35em")
+                    .attr("y", 5)
+                    .text(d => d.data.name);
+            }, 3000);
+    
+            // Función para manejar el zoom y pan
+            function zoomed(event) {
+                svg.attr("transform", event.transform);
+            }
+    
+        } else {
+            document.getElementById("tree-container").innerHTML = "<p>No se encontró ninguna operación para generar el árbol.</p>";
+        }
+    </script>    
+</body>
+</html>

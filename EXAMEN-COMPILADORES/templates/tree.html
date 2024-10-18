@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Árbol de Operaciones</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        .node circle {
+            fill: #d100f1;
+            stroke: white;
+            stroke-width: 3px;
+        }
+        .node text {
+            font: 30px sans-serif;
+            fill: rgb(3, 247, 231);
+            text-anchor: middle;
+        }
+        .link {
+            fill: none;
+            stroke: #ccc;
+            stroke-width: 10px;
+        }
+        body {
+           background-image: url('https://wallpapercave.com/wp/wp8968329.jpg');
+            color: white;
+            text-align: center;
+        }
+        svg {
+            border: 10px solid #555;
+        }
+    </style>
+</head>
+<body>
+    <h1>Árbol de Operación</h1>
+    <div id="tree-container"></div>
+
+    <script>
+        function parseOperation(op) {
+            op = op.replace(/\s+/g, '');
+            const isOperator = (char) => ['+', '-', '*', '/'].includes(char);
+
+            function buildTree(expression) {
+                if (!isNaN(expression)) {
+                    return { name: expression };
+                }
+
+                let openParens = 0;
+                let operatorIndex = -1;
+
+                for (let i = 0; i < expression.length; i++) {
+                    const char = expression[i];
+                    if (char === '(') openParens++;
+                    if (char === ')') openParens--;
+                    if (isOperator(char) && openParens === 0) {
+                        operatorIndex = i;
+                    }
+                }
+
+                if (operatorIndex !== -1) {
+                    const operator = expression[operatorIndex];
+                    const left = expression.slice(0, operatorIndex);
+                    const right = expression.slice(operatorIndex + 1);
+                    return {
+                        name: operator,
+                        children: [buildTree(left), buildTree(right)]
+                    };
+                }
+
+                if (expression[0] === '(' && expression[expression.length - 1] === ')') {
+                    return buildTree(expression.slice(1, -1));
+                }
+
+                return { name: expression };
+            }
+            return buildTree(op);
+        }
+
+        const operation = localStorage.getItem('operation');
+        if (operation) {
+            const treeData = parseOperation(operation);
+            const margin = { top: 40, right: 50, bottom: 20, left: 50 },
+                width = 800 - margin.right - margin.left,
+                height = 600 - margin.top - margin.bottom;
+
+            const svg = d3.select("#tree-container").append("svg")
+                .attr("width", width + margin.right + margin.left)
+                .attr("height", height + margin.top + margin.bottom)
+                .call(d3.zoom().scaleExtent([0.5, 3])
+                    .on("zoom", zoomed))
+                .append("g")
+                .attr("transform", `translate(${margin.left},${margin.top})`);
+
+            const root = d3.hierarchy(treeData);
+            const treeLayout = d3.tree().size([width, height]);
+            treeLayout(root);
+
+            const link = svg.selectAll(".link")
+                .data(root.links())
+                .enter()
+                .append("path")
+                .attr("class", "link")
+                .attr("d", d3.linkHorizontal()
+                    .x(d => d.y)
+                    .y(d => d.x));
+
+            const node = svg.selectAll(".node")
+                .data(root.descendants())
+                .enter()
+                .append("g")
+                .attr("class", "node")
+                .attr("transform", d => `translate(${d.y},${d.x})`);
+
+            node.append("circle")
+                .attr("r", 25);
+
+            node.append("text")
+                .attr("dy", ".35em")
+                .attr("y", 5)
+                .text(d => d.data.name);
+
+            function zoomed(event) {
+                svg.attr("transform", event.transform);
+            }
+        } else {
+            document.getElementById("tree-container").innerHTML = "<p>No se encontró ninguna operación para generar el árbol.</p>";
+        }
+    </script>    
+</body>
+</html>

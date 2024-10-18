@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora con Tokens</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="calculator-container">
+        <h1>Calculadora</h1>
+        <form method="POST" id="calc-form">
+            <input type="text" name="expression" id="expression" value="{{ expression }}" placeholder="0" readonly>
+            
+            <div class="buttons">
+                <button type="button" class="btn" onclick="appendValue('1')">1</button>
+                <button type="button" class="btn" onclick="appendValue('2')">2</button>
+                <button type="button" class="btn" onclick="appendValue('3')">3</button>
+                <button type="button" class="btn operator" onclick="appendValue('+')">+</button>
+                
+                <button type="button" class="btn" onclick="appendValue('40')">4</button>
+                <button type="button" class="btn" onclick="appendValue('50')">5</button>
+                <button type="button" class="btn" onclick="appendValue('60')">6</button>
+                <button type="button" class="btn operator" onclick="appendValue('-')">-</button>
+
+                <button type="button" class="btn" onclick="appendValue('70')">7</button>
+                <button type="button" class="btn" onclick="appendValue('8')">8</button>
+                <button type="button" class="btn" onclick="appendValue('9')">9</button>
+                <button type="button" class="btn operator" onclick="appendValue('*')">*</button>
+
+                <button type="button" class="btn" onclick="appendValue('000')">0</button>
+                <button type="button" class="btn" onclick="appendValue('/')">/</button>
+                <button type="button" class="btn" onclick="clearExpression()">C</button>
+                <button type="submit" class="btn equals">=</button>
+                <button type="button" class="btn equals" onclick="saveExpressionAndGoToTree()">Tree</button>
+            </div>
+        </form>
+
+        {% if result is not none %}
+            <h2>Resultado: {{ result }}</h2>
+        {% endif %}
+
+        <h3>Tokens Utilizados</h3>
+        <ul>
+            {% for token in tokens %}
+                <li>{{ token[0] }}: {{ token[1] }}</li>
+            {% endfor %}
+        </ul>
+
+        <h3>Conteo de Tokens</h3>
+        <ul>
+            <li>Total: {{ token_counts.total }}</li>
+            <li>Números: {{ token_counts.numbers }}</li>
+            <li>Operadores: {{ token_counts.symbols }}</li>
+        </ul>
+
+        <h3>Árbol de Operación</h3>
+        <p>{{ tree_data }}</p>
+    </div>
+
+    <script>
+        function appendValue(value) {
+            document.getElementById('expression').value += value;
+        }
+
+        function clearExpression() {
+            document.getElementById('expression').value = '';
+        }
+
+        function saveExpressionAndGoToTree() {
+            const expression = document.getElementById('expression').value;
+            if (expression) {
+                localStorage.setItem('operation', expression);
+                window.location.href = '/tree';
+            } else {
+                alert("Por favor, ingrese una expresión.");
+            }
+        }
+    </script>
+</body>
+</html>

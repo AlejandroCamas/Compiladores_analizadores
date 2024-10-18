@@ -1,0 +1,88 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-image: url('https://wallpapercave.com/wp/wp8968329.jpg');
+    background-size: 100% 100%; /* Cambia el tamaño de la imagen a un 50% del ancho y alto del contenedor */
+  background-repeat: no-repeat;
+  background-position: center;
+    /*background: linear-gradient(135deg, #013535, #012e01, #06012f);*/
+    font-family: 'Comic Sans MS', Arial, Verdana;
+    /*animation: backgroundAnimation 10s linear infinite alternate;*/
+  }
+  
+  @keyframes backgroundAnimation {
+    0% {
+      background-position: 0% 0%;
+    }
+    100% {
+      background-position: 100% 100%;
+    }
+  }
+  .calculator {
+    background: rgb(1, 45, 174);
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    width: 320px;
+  }
+  
+  #display {
+    width: 94%;
+    padding: 10px;
+    font-size: 28px;
+    margin: 0;
+    margin-bottom: 15px;
+    border: none;
+    border-radius: 8px;
+    background-color: #f8f8f8;
+    text-align: right;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 10px;
+  }
+  
+  button {
+    padding: 20px;
+    font-size: 24px;
+    text-align: center;
+    border: none;
+    border-radius: 8px;
+    background-color: #e0e0e0;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button.operator {
+    background-color: #f0bc00;
+    color: black;
+  }
+  
+  button.clear {
+    background-color: #ef4040;
+    color: #000000;
+  }
+  
+  button.equal {
+    background-color: #ef4040;
+    color: black;
+  }
+  
+  button:hover {
+    background-color: #bbb9b9;
+  }
+  
+  .attribution {
+    text-align: right;
+    font-size: 16px;
+    color: #fff;
+    margin-top: 0;
+  }
+  
